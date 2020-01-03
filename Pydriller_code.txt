@@ -1,0 +1,21 @@
+from pydriller import RepositoryMining
+import sys
+import csv
+
+#Commit hash, Author name
+filename="Demos2.csv"
+fields=['hash','name']
+row=[]
+with open(filename, 'w',newline='') as csvfile:
+    csvwriter=csv.DictWriter(csvfile,fieldnames=fields)
+    csvwriter.writeheader()
+
+for commit in RepositoryMining('https://github.com/jovotech/jovo-framework.git').traverse_commits(): 
+    temp1=commit.hash
+    temp2=commit.author.name
+    rows=[{'hash': temp1},{'name': temp2}]
+
+    with open(filename, 'a',encoding="utf-8",newline='') as csvfile:
+        csvwriter=csv.DictWriter(csvfile,fieldnames=fields)
+        #writing the data rows
+        csvwriter.writerows(rows)
